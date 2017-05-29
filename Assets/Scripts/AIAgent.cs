@@ -6,6 +6,7 @@ public class AIAgent : MonoBehaviour {
 
     public Vector3 force;
     public Vector3 velocity;
+    public float maxVelocity = 100f;
 
     private SteeringBeaviour[] behaviours;
 
@@ -22,49 +23,40 @@ public class AIAgent : MonoBehaviour {
 
     void ComputeForces()
     {
-        /*
-        // SET force to zero
-        Vector3 force = 0;
-        // FOR i = 0 to behaviours count
-        for (i = 0) {
-            // IF behaviour is enabled
-            if (behaviour = true) {
-            // Continue
+        force = Vector3.zero; // When you creare a variable in a function, it only exists within that function.
+        
+        for(int i=0; i < behaviours.Length; i++)
+        {
+            SteeringBeaviour behaviour = behaviours[i];
+            if (!behaviour.enabled)
+            {
+                continue;
+            }
+            force += behaviour.GetForce();
+
+            if(force.magnitude > maxVelocity)
+            {
+                force = force.normalized * maxVelocity;
+
+                break;
             }
         }
-        // SET force to force + behaviour's force
-
-        force = force + behaviours.force();
-
-        // IF force is greater than maxVelocity
-        if (force > maxVelocity) {
-            // SET force to normalized x maxVelocity
-            force = normalized * maxVelocity();
-            // BREAK
-            Break;
-        }
-        */
     }
 
     void ApplyVelocity()
     {
-        /*
-        // SET velocity to velocity + force x delta time
-        velocity = velocity + force * Time.delta.time();
-        // IF velocity is greater than maxVelocity
-        if (velocity > maxVelocity)
+        velocity += force * Time.deltaTime;
+
+        if(velocity.magnitude > maxVelocity)
         {
-            // SET velocity to velocity normalized x maxVelocity
             velocity = velocity.normalized * maxVelocity;
         }
-        // IF velocity is greater than zero
-        if (velocity > 0)
+
+        if(velocity != Vector3.zero)
         {
-            // SET position to position + velocity x delta time
-            transform.position = transform.position + velocity * delta.time;
-            // SET rotation to Quaternion.LookRotation velocity
-            transform.rotation = Quaternion.LookRotation.velocity;
+            transform.position += velocity * Time.deltaTime;
+
+            transform.rotation = Quaternion.LookRotation(velocity);
         }
-        */
     }
 }
