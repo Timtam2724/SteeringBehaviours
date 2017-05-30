@@ -27,20 +27,41 @@ public class Wander : SteeringBeaviour {
 
         #region Calculate RandomDir
         // SET randomDir to new Vector3 x = randX & z = randZ
+
+        randomDir = new Vector3(randX, 0, randZ);
+
         // SET randomDir to normalized randomDir
+
+        randomDir = randomDir.normalized;
+
         // SET randomDir to randomDir x jitter
+
+        randomDir = randomDir * jitter;
+
         #endregion
 
         #region Calculate TargetDir
         // SET targetDir to targetDir + randomDir
+
+        targetDir = targetDir + randomDir;
+
         // SET targetDir to normalized targetDir
+
+        targetDir = targetDir.normalized;
+
         // SET targetDir to targetDir x radius
+
+        targetDir = targetDir * radius;
+
         #endregion
 
         #region Calculate Force
         // SET seekPos to owner's position + targetDir
-        Vector3 seekPos = Vector3.zero;
+        Vector3 seekPos =  owner.transform.position + targetDir;
         // SET seekPos to seekPos + owner's forward x offset
+
+        seekPos = seekPos + owner.transform.forward * offset;
+
         #region GIZMOS
         Vector3 offsetPos = transform.position + transform.forward.normalized * offset;
         GizmosGL.AddCircle(offsetPos + Vector3.up * 0.1f, 
@@ -51,10 +72,17 @@ public class Wander : SteeringBeaviour {
         #endregion
 
         // SET desiredForce to seekPos - position
-        // If desiredForce is not zero
-          // SET desiredForce to desiredForce normalized x weighting
-          // SET force to desiredForce - owner's velocity
 
+        Vector3 desiredForce = seekPos - transform.position;
+
+        // If desiredForce is not zero
+        if (desiredForce != Vector3.zero)
+        {
+            // SET desiredForce to desiredForce normalized x weighting
+            desiredForce = desiredForce.normalized * weighting;
+            // SET force to desiredForce - owner's velocity
+            force = desiredForce - owner.velocity;
+        }
         #endregion
 
         // RETURN force
