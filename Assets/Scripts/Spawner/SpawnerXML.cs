@@ -57,37 +57,56 @@ public class SpawnerXML : MonoBehaviour {
     public void Save()
     {
         // SET objects to spawner.objects
+        var objects = spawner.objects;
         // SET xmlContainer to new XMLContainer
+        xmlContainer = new XMLContainer();
         // SET xmlContainer.data to new SpawnerData[objects.Count]
+        xmlContainer.data = new SpawnerData[objects.Count()];
         // FOR i = 0 to objects.Count
-          // SET data to new SpawerData
-          // SET item to object[i]
-          // SET data's position to item's position
-          // SET data's rotaition to items's rotation
-          // SET xmlContainer.data[i] to data
-       // CALL SaveToPath(fullPath)         
+        for(int i = 0; i < objects.Count(); i++)
+           {
+            // SET data to new SpawerData
+            var data = new SpawnerData();
+            // SET item to objects[i]
+            var item = objects[i];
+            // SET data's position to item's position
+            data.position = item.transform.position;
+            // SET data's rotation to items's rotation
+            data.rotation = item.transform.rotation;
+            // SET xmlContainer.data[i] to data
+            xmlContainer.data[i] = data;
+           }
+       // CALL SaveToPath(fullPath)
+      SaveToPath(fullPath);
     }
 
     // Applies the saved data to the scene
     void Apply()
     {
         // SET data to xmlContainer.data
+        var data = xmlContainer.data;
         // FOR i = 0 to data.Length
-          // SET d to data[i]
-          // CALL spawner.Spawn() and pass d.position, d.rotation
+        for (int i = 0; data.Length(); i++)
+        {
+            // SET d to data[i]
+            var d = data[i];
+            // CALL spawner.Spawn() and pass d.position, d.rotation
+            spawner.Spawn(d.position, d.rotation);
+        }
     }
-
 	// Use this for initialization
 	void Start () {
-		// SET spawner to Spawner Component
+        // SET spawner to Spawner Component
+        var spawner = GetComponent<Spawner>();
         // SET fullPath to Application.dataPath + "/" + fileName + ".xml"
+        fullPath = Application.dataPath + "/" + fileName + ".xml";
         // IF file exists at fullPath
-          // SET xmlContainer to Load(fullPath)
-          // CALL Apply()
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        if (File.Exists(fullPath))
+        {
+            // SET xmlContainer to Load(fullPath)
+            xmlContainer = Load(fullPath);
+            // CALL Apply()
+            Apply();
+        }
+	}	
 }
