@@ -27,30 +27,24 @@ public class Wander : SteeringBeaviour {
 
         #region Calculate RandomDir
         // SET randomDir to new Vector3 x = randX & z = randZ
-
         randomDir = new Vector3(randX, 0, randZ);
 
         // SET randomDir to normalized randomDir
-
         randomDir = randomDir.normalized;
 
         // SET randomDir to randomDir x jitter
-
         randomDir = randomDir * jitter;
 
         #endregion
 
         #region Calculate TargetDir
         // SET targetDir to targetDir + randomDir
-
         targetDir = targetDir + randomDir;
 
         // SET targetDir to normalized targetDir
-
         targetDir = targetDir.normalized;
 
         // SET targetDir to targetDir x radius
-
         targetDir = targetDir * radius;
 
         #endregion
@@ -72,7 +66,6 @@ public class Wander : SteeringBeaviour {
         #endregion
 
         // SET desiredForce to seekPos - position
-
         Vector3 desiredForce = seekPos - transform.position;
 
         // If desiredForce is not zero

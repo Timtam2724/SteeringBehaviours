@@ -53,7 +53,7 @@ public class SpawnerXML : MonoBehaviour {
             return serializer.Deserialize(stream) as XMLContainer;
         }
     }
-
+    /*
     public void Save()
     {
         // SET objects to spawner.objects
@@ -109,4 +109,5 @@ public class SpawnerXML : MonoBehaviour {
             Apply();
         }
 	}	
+    */
 }
