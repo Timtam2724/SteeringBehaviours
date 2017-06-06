@@ -61,9 +61,9 @@ public class SpawnerXML : MonoBehaviour {
         // SET xmlContainer to new XMLContainer
         xmlContainer = new XMLContainer();
         // SET xmlContainer.data to new SpawnerData[objects.Count]
-        xmlContainer.data = new SpawnerData[objects.Count()];
+        xmlContainer.data = new Spawner[objects.Count];
         // FOR i = 0 to objects.Count
-        for(int i = 0; i < objects.Count(); i++)
+        for(int i = 0; i < objects.Count; i++)
            {
             // SET data to new SpawerData
             var data = new SpawnerData();
@@ -79,7 +79,7 @@ public class SpawnerXML : MonoBehaviour {
        // CALL SaveToPath(fullPath)
       SaveToPath(fullPath);
     }
-
+    
     // Applies the saved data to the scene
     void Apply()
     {
@@ -108,6 +108,5 @@ public class SpawnerXML : MonoBehaviour {
             // CALL Apply()
             Apply();
         }
-	}	
-    */
+	}	*/    
 }

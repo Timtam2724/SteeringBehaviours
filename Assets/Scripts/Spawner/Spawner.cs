@@ -60,6 +60,5 @@ public class Spawner : MonoBehaviour {
             // SET spawnTimer to zero
             spawnTimer = 0f;
         }
-	}
-    */
+	}*/
 }
