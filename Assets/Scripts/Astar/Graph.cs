@@ -23,10 +23,10 @@ public class Graph : MonoBehaviour
     void Update()
     {
         //   CheckWalkables();
-        CreateGrid();
+        CheckWalkables();
     }
-    
-    
+
+
     void OnDrawGizmos()
     {
         Gizmos.color = new Color(0, 0, 1, 0.5f);
@@ -152,34 +152,111 @@ public class Graph : MonoBehaviour
     }
 
     // This function will return all neighbours surrounding a node
-    public List<Node> GetNeighbours(Node node)
+     public List<Node> GetNeighbours(Node node)
+     {
+         // Make a new list of neighbours
+         List<Node> neighbours = new List<Node>();
+
+         // Try and look at the surrounding neighbours
+         for (int x = -1; x <= 1; x++)
+         {
+             for (int z = -1; z <= 1; z++)
+             {
+                 // Check if the coordinate is the current node
+                 if (x == 0 && z == 0)
+                     continue; // Skip that node
+
+                 int checkX = node.gridX + x;
+                 int checkZ = node.gridZ + z;
+                 // Check if the index is within bounds
+                 if(checkX >= 0 &&
+                    checkX < gridSizeX &&
+                    checkZ >= 0 &&
+                    checkZ < gridSizeZ)
+                 {
+                     // Add neighbour to list
+                     neighbours.Add(nodes[checkX, checkZ]);
+                 }
+             }
+         }
+
+         return neighbours;
+     }
+    public List<Node> FindPath(Vector3 startPos, Vector3 targetPos)
     {
-        // Make a new list of neighbours
-        List<Node> neighbours = new List<Node>();
+        Node startNode = GetNodeFromPosition(startPos);
+        Node targetNode = GetNodeFromPosition(targetPos);
 
-        // Try and look at the surrounding neighbours
-        for (int x = -1; x <= 1; x++)
+        List<Node> openSet = new List<Node>();
+        HashSet<Node> closedSet = new HashSet<Node>();
+        openSet.Add(startNode);
+
+        while (openSet.Count > 0)
         {
-            for (int z = -1; z <= 1; z++)
+            Node node = openSet[0];
+            for (int i = 1; i < openSet.Count; i++)
             {
-                // Check if the coordinate is the current node
-                if (x == 0 && z == 0)
-                    continue; // Skip that node
-
-                int checkX = node.gridX + x;
-                int checkZ = node.gridZ + z;
-                // Check if the index is within bounds
-                if(checkX >= 0 &&
-                   checkX < gridSizeX &&
-                   checkZ >= 0 &&
-                   checkZ < gridSizeZ)
+                if (openSet[i].fCost < node.fCost || openSet[i].fCost == node.fCost)
                 {
-                    // Add neighbour to list
-                    neighbours.Add(nodes[checkX, checkZ]);
+                    if (openSet[i].hCost < node.hCost)
+                        node = openSet[i];
+                }
+            }
+
+            openSet.Remove(node);
+            closedSet.Add(node);
+
+            if (node == targetNode)
+            {
+                path = RetracePath(startNode, targetNode);
+                return path;
+            }
+
+            foreach (Node neighbour in GetNeighbours(node))
+            {
+                if (!neighbour.walkable || closedSet.Contains(neighbour))
+                {
+                    continue;
+                }
+
+                int newCostToNeighbour = node.gCost + GetDistance(node, neighbour);
+                if (newCostToNeighbour < neighbour.gCost || !openSet.Contains(neighbour))
+                {
+                    neighbour.gCost = newCostToNeighbour;
+                    neighbour.hCost = GetDistance(neighbour, targetNode);
+                    neighbour.parent = node;
+
+                    if (!openSet.Contains(neighbour))
+                        openSet.Add(neighbour);
                 }
             }
         }
 
-        return neighbours;
+        return null;
+    }
+
+    List<Node> RetracePath(Node startNode, Node endNode)
+    {
+        List<Node> path = new List<Node>();
+        Node currentNode = endNode;
+
+        while (currentNode != startNode)
+        {
+            path.Add(currentNode);
+            currentNode = currentNode.parent;
+        }
+        path.Reverse();
+
+        return path;
+    }
+
+    int GetDistance(Node nodeA, Node nodeB)
+    {
+        int dstX = Mathf.Abs(nodeA.gridX - nodeB.gridX);
+        int dstZ = Mathf.Abs(nodeA.gridZ - nodeB.gridZ);
+
+        if (dstX > dstZ)
+            return 14 * dstZ + 10 * (dstX - dstZ);
+        return 14 * dstX + 10 * (dstZ - dstX);
     }
 }

@@ -8,7 +8,7 @@ using System.IO;
 [RequireComponent(typeof(Spawner))]
 public class SpawnerXML : MonoBehaviour {
 
-    // Contains data for each object spawned
+   /* // Contains data for each object spawned
     public class SpawnerData
     {
         public Vector3 position;
@@ -53,7 +53,7 @@ public class SpawnerXML : MonoBehaviour {
             return serializer.Deserialize(stream) as XMLContainer;
         }
     }
-    /*
+    
     public void Save()
     {
         // SET objects to spawner.objects
@@ -94,8 +94,9 @@ public class SpawnerXML : MonoBehaviour {
             spawner.Spawn(d.position, d.rotation);
         }
     }
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         // SET spawner to Spawner Component
         var spawner = GetComponent<Spawner>();
         // SET fullPath to Application.dataPath + "/" + fileName + ".xml"
@@ -108,5 +109,5 @@ public class SpawnerXML : MonoBehaviour {
             // CALL Apply()
             Apply();
         }
-	}	*/    
+    }*/
 }
