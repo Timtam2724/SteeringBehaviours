@@ -6,7 +6,7 @@ using GGL;
 public class NewBehaviourScript : MonoBehaviour {
 
     public Transform selectedTarget;
-    public float rayDistance = 100f;
+    public float rayDistance = 1000f;
     public LayerMask selectionLayer;
     private AIAgent[] agents;
 

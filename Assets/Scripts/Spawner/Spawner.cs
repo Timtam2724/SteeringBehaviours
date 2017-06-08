@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour {
-   /* 
+   
     public GameObject prefab; // Prefab of object we want to spawn
     public float spawnRate = 1f; // Spawn an object every spawn rate interval (in seconds)
     [HideInInspector]
@@ -60,5 +60,5 @@ public class Spawner : MonoBehaviour {
             // SET spawnTimer to zero
             spawnTimer = 0f;
         }
-	}*/
+	}
 }

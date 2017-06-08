@@ -20,6 +20,7 @@ public class Flee : SteeringBeaviour
         // When there is no target
         if (target == null)
         {
+            // Restarts the force when the function finishes
             return force;
         }
         Vector3 desiredForce = target.transform.position - transform.position;
@@ -35,6 +36,7 @@ public class Flee : SteeringBeaviour
         }
         // Sends message if the first script fails 
         else { Debug.Log("Failed magnitudes"); }
+        // After the function, the force will return to zero
         return force;
     }
     void Update()

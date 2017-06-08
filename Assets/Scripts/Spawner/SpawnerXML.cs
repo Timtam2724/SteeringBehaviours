@@ -8,7 +8,7 @@ using System.IO;
 [RequireComponent(typeof(Spawner))]
 public class SpawnerXML : MonoBehaviour {
 
-   /* // Contains data for each object spawned
+   // Contains data for each object spawned
     public class SpawnerData
     {
         public Vector3 position;
@@ -18,7 +18,7 @@ public class SpawnerXML : MonoBehaviour {
     public class XMLContainer
     {
         [XmlArray]
-        public Spawner[] data;
+        public SpawnerData[] data;
     }
 
     public string fileName;
@@ -61,7 +61,7 @@ public class SpawnerXML : MonoBehaviour {
         // SET xmlContainer to new XMLContainer
         xmlContainer = new XMLContainer();
         // SET xmlContainer.data to new SpawnerData[objects.Count]
-        xmlContainer.data = new Spawner[objects.Count];
+        xmlContainer.data = new SpawnerData[objects.Count];
         // FOR i = 0 to objects.Count
         for(int i = 0; i < objects.Count; i++)
            {
@@ -86,7 +86,7 @@ public class SpawnerXML : MonoBehaviour {
         // SET data to xmlContainer.data
         var data = xmlContainer.data;
         // FOR i = 0 to data.Length
-        for (int i = 0; data.Length(); i++)
+        for (int i = 0; i < data.Length; i++)
         {
             // SET d to data[i]
             var d = data[i];
@@ -109,5 +109,5 @@ public class SpawnerXML : MonoBehaviour {
             // CALL Apply()
             Apply();
         }
-    }*/
+    }
 }
