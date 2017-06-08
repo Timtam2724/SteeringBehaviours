@@ -4,39 +4,6 @@ using UnityEngine;
 
 public class Flee : SteeringBeaviour
 {
-
-    /*   public Transform target;
-       public float stoppingDistance = 5f;
-
-       public override Vector3 GetForce()
-       {
-           // SET force to zero
-           Vector3 force = Vector3.zero;
-
-           // IF target is null
-           if (target == null)
-           {
-               // Return force
-               return force;
-           }
-
-           // Set desiredForce to direction from target to owner's position
-           Vector3 desiredForce = target.position - owner.transform.position;
-           //Set desiredForece y to zero
-           desiredForce.y = 0f;
-
-           // If desiredForce is greater than stoppingDistance
-           if (desiredForce.magnitude > stoppingDistance)
-           {
-               // Set desiredForce to desiredForce normalized x weighting
-               desiredForce = desiredForce.normalized * weighting;
-               // Set force to desiredForce - owner's velocity
-               force = desiredForce - owner.velocity;
-           }
-           // Return force
-           return force;
-       }*/
-
     // Make the character flee
     // Flee from the target
     public GameObject target;
@@ -48,31 +15,36 @@ public class Flee : SteeringBeaviour
 
     public override Vector3 GetForce()
     {
+        // Start with the force equal to 0
         Vector3 force = Vector3.zero;
-
+        // When there is no target
         if (target == null)
         {
             return force;
         }
         Vector3 desiredForce = target.transform.position - transform.position;
         desiredForce.y = 0f;
+        // By times the desiredforce by -1 it reverses the seek to flee
         desiredForce *= -1;
+        // Activates the target fleeing if the fox is close enough to the cube
         if (desiredForce.magnitude > 0 && distanceFromTarget <10)
         {
             desiredForce = desiredForce.normalized * weighting;
             force = desiredForce - owner.velocity;
             Debug.Log(force.ToString());
         }
-        else { Debug.Log("Failed magnatuds"); }
+        // Sends message if the first script fails 
+        else { Debug.Log("Failed magnitudes"); }
         return force;
     }
     void Update()
     {
+        // Activates the Distance script
         Distance();
-
     }
     void Distance()
     {
+        // Measures how far away the target is from the fox
         distanceFromTarget = Vector3.Distance(target.transform.position, transform.position);
     }
 }

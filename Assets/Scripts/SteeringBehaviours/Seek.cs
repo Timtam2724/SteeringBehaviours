@@ -21,7 +21,7 @@ public class Seek : SteeringBeaviour {
 
         // Set desiredForce to direction from target to owner's position
         Vector3 desiredForce = target.position - owner.transform.position;
-        //Set desiredForece y to zero
+        //Set desiredForce y to zero
         desiredForce.y = 0f;
 
         // If desiredForce is greater than stoppingDistance
